@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Grocerist.DB
+namespace GroceristLibrary.DB
 {
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<GroceristContext>
     {
@@ -21,7 +16,7 @@ namespace Grocerist.DB
 
             var builder = new DbContextOptionsBuilder<GroceristContext>();
 
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetConnectionString("GroceristService");
 
             builder.UseSqlServer(connectionString);
 

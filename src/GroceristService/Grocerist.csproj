@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameworkVersion>2.1.4</RuntimeFrameworkVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DB\Entities\" />
-    <Folder Include="wwwroot\" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.4" />
+    <ProjectReference Include="..\GroceristLibrary\GroceristLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
