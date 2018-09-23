@@ -1,12 +1,14 @@
-﻿using GroceristLibrary.DB;
+﻿using GroceristLibrary.ApplicationLogic;
+using GroceristLibrary.DB;
+using GroceristLibrary.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
-namespace Grocerist
+namespace GroceristService
 {
     public class Startup
     {
@@ -30,7 +32,13 @@ namespace Grocerist
             {
                 options.UseSqlServer(Configuration.GetConnectionString("GroceristService"));
             });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddMvc();
+            services.AddTransient<IGroceristRepository, GroceristRepository>();
+            services.AddTransient<IGroceristMapper, GroceristMapper>();
+            services.AddTransient<IListApplicationLogic, ListApplicationLogic>();
+
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info() {Title = "Grocerist API", Version = "v1" }); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +53,10 @@ namespace Grocerist
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UsePathBase("/grocerist-service");
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Grocerist API V1"); });
             app.UseMvc();
         }
     }
