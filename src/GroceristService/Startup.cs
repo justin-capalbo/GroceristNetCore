@@ -33,6 +33,15 @@ namespace GroceristService
                 options.UseSqlServer(Configuration.GetConnectionString("GroceristService"));
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("OpenPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            }); 
+
             services.AddMvc();
             services.AddTransient<IGroceristRepository, GroceristRepository>();
             services.AddTransient<IGroceristMapper, GroceristMapper>();
@@ -52,6 +61,9 @@ namespace GroceristService
             {
                 app.UseHsts();
             }
+
+            app.UseStaticFiles();
+            app.UseCors("OpenPolicy");
 
             app.UsePathBase("/grocerist-service");
 
